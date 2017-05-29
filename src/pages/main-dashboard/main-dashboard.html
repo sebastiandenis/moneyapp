@@ -1,0 +1,20 @@
+
+<ion-header>
+
+  <ion-navbar color="secondary">
+
+    <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      
+    <ion-title>main-dashboard</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<h3>Budżet: </h3>
+  <b>{{ (budgetService.currentBudget$ | async)?.name}}</b>
+
+</ion-content>

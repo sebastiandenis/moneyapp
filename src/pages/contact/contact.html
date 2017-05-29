@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Contact
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-list-header>Follow us on Twitter</ion-list-header>
+    <h1>Hi {{(authService.authInfo$ | async)?.$uid}}</h1>
+    <div *ngIf="authService.user$ | async as user">
+      <h4>User: {{user.email}}</h4>
+      <h4>Current budget ID: {{user.config?.currentBudgetId}}</h4>
+      <h4>Default lang: {{user.config?.defaultLang}}</h4>
+
+    </div>
+
+    <ion-item>
+      <ion-icon name="ionic" item-left></ion-icon>
+      @ionicframework
+    </ion-item>
+  </ion-list>
+  
+  <button type="button" (click)="onCheckLang()">Check Lang</button>
+  
+</ion-content>

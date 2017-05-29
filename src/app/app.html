@@ -1,0 +1,20 @@
+<ion-menu [content]="nav">
+    <ion-header>
+        <ion-toolbar color="primary">
+            <ion-title>{{'appname' | translate}}</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+        <ion-list>
+            <button ion-item (click)="onLoad(loginPage)" *ngIf="!(authService.authInfo$ | async)?.isLoggedIn()">
+            <ion-icon name="log-out" item-left></ion-icon>{{'login' | translate}}
+            </button>
+
+            <button ion-item (click)="onLogout()" *ngIf="(authService.authInfo$ | async)?.isLoggedIn()">
+            <ion-icon name="log-out" item-left></ion-icon>{{'logout' | translate}}
+            </button>
+        </ion-list>
+        <p margin-left style="color: #606060;">{{'version' | translate}}: 0.1.2</p>
+    </ion-content>
+</ion-menu>
+<ion-nav [root]="rootPage" #nav></ion-nav>
