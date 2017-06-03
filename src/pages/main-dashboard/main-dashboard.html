@@ -31,7 +31,7 @@
 <ion-content padding>
   <div *ngIf="budgetService.currentBudget$ | async as currentBudget else loadingTpl2">
     <ion-fab right top>
-      <button ion-fab color="primary-light" (click)="onAddOutgo(budgetId)"><ion-icon name="add"></ion-icon></button>
+      <button ion-fab color="danger" (click)="onAddOutgo(budgetId)"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
 
     <ion-grid no-padding margin-top>
@@ -52,7 +52,7 @@
             </span>
             </div>
             <round-progress [current]="currentBudget.getRoundedCashLeft()" [max]="currentBudget.totalCash" [responsive]="responsive"
-              [stroke]="stroke" [clockwise]="colckwise" [color]="color" [rounded]="rounded"></round-progress>
+              [stroke]="stroke" [clockwise]="colckwise" [color]="getColor(currentBudget.cashLeft, currentBudget.totalCash)" [rounded]="rounded"></round-progress>
           </div>
         </ion-col>
       </ion-row>

@@ -40,8 +40,8 @@ export class MainDashboardPage {
   ionViewDidLoad() {
     //pobierz aktywny budżet
     console.log("Pobieram aktywny budżet...");
-   console.log("Pobieram quote w języku: ",this.translate.currentLang);
-   
+    console.log("Pobieram quote w języku: ", this.translate.currentLang);
+
 
   }
 
@@ -53,6 +53,21 @@ export class MainDashboardPage {
 
   onLines() {
 
+  }
+
+  getColor(left: number, total: number):string {
+    if (left && total) {
+      let p = left / total;
+      if(p<=0.15){
+        return "#ff6666";
+      }else if(p>=0.50){
+        return "#99cc00";
+      }else{
+        return "#ffaa00";
+      }
+    } else {
+      return this.color;
+    }
   }
 
   getOverlayStyle() {
