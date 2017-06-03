@@ -32,8 +32,8 @@ export class Budget {
         }
     }
 
-    static fromJson({$key, name, dateStart, dateEnd, totalCash, cashLeft, lines}): Budget {
-        return new Budget($key, name, new Date(dateStart), new Date(dateEnd), totalCash, cashLeft, lines);
+    static fromJson({$key, name, dateStart, dateEnd, totalCash, cashLeft}): Budget {
+        return new Budget($key, name, new Date(dateStart), new Date(dateEnd), totalCash, cashLeft);
     }
 
     static fromJsonArray(json: any[]): Budget[] {

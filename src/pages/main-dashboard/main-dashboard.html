@@ -1,4 +1,3 @@
-
 <ion-header>
 
   <ion-navbar color="secondary">
@@ -6,15 +5,80 @@
     <button ion-button icon-only menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
-      
-    <ion-title>main-dashboard</ion-title>
+
+    <ion-title small text-left>
+      <div *ngIf="budgetService.currentBudget$ | async as currentBudget else loadingTpl">
+        {{currentBudget?.name}}
+      </div>
+      <ng-template #loadingTpl>
+        {{'loading' | translate}}...
+      </ng-template>
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="more"></ion-icon>
+         
+      </button>
+
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-<h3>Budżet: </h3>
-  <b>{{ (budgetService.currentBudget$ | async)?.name}}</b>
+  <div *ngIf="budgetService.currentBudget$ | async as currentBudget else loadingTpl2">
+    <ion-fab right top>
+      <button ion-fab color="primary-light" (click)="onAddOutgo(budgetId)"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+
+    <ion-grid no-padding margin-top>
+      <ion-row>
+        <ion-col col-10 offset-1>
+          <div class="progress-wrapper">
+            <div class="current" text-center [ngStyle]="getOverlayStyle()"><span style="color: #2096ba;font-size: 3.3rem;">{{currentBudget.getRoundedCashLeft()}}</span><span style="font-size: 1.7rem"> / {{currentBudget.totalCash}}</span>
+              <br>
+              <span style="font-size: 1.6rem; color: #36384c;" *ngIf="currentBudget.daysLeft()==1">
+           {{currentBudget.daysLeft()}} {{ ('dayLeft' | translate)}} 
+            </span>
+              <span style="font-size: 1.6rem; color: #36384c;" *ngIf="currentBudget.daysLeft()!=1">
+           {{currentBudget.daysLeft()}} {{ ('daysLeft' | translate)}} 
+            </span>
+              <br>
+              <span style="font-size: 1.7rem; color: #36384c;" *ngIf="currentBudget.daysLeft()!=0">
+            {{currentBudget.perDay()}} {{'perday' | translate}}
+            </span>
+            </div>
+            <round-progress [current]="currentBudget.getRoundedCashLeft()" [max]="currentBudget.totalCash" [responsive]="responsive"
+              [stroke]="stroke" [clockwise]="colckwise" [color]="color" [rounded]="rounded"></round-progress>
+          </div>
+        </ion-col>
+      </ion-row>
+      <hr>
+    </ion-grid>
+
+  </div>
+  <ng-template #loadingTpl2>
+    {{'loading' | translate}}...
+  </ng-template>
+
+  <div *ngIf="quoteService.currentQuote$ | async  as currentQuote else loadingTpl3">
+    <ion-grid style="height: auto;" padding>
+      <ion-row align-items-center>
+        <ion-col>
+          <p ion-text color="secondary-dark" class="quote" text-center>{{currentQuote.translations[translate.currentLang]}}</p>
+          <p ion-text color="secondary-dark" class="quoteperson" text-right>- {{currentQuote.author}}</p>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+
+  </div>
+   <ng-template #loadingTpl3>
+    ...ładuję quote
+  </ng-template>
+
 
 </ion-content>

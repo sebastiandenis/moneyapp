@@ -8,4 +8,5 @@ export class Translation {
     static fromJsonArray(json: any[]): Translation[] {
         return json.map(trans => Translation.fromJson(trans));
     }
+
 }

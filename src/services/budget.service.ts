@@ -2,7 +2,7 @@ import { Injectable, Inject } from "@angular/core";
 import { AngularFireDatabase } from "angularfire2/database";
 import { FirebaseApp } from "angularfire2";
 import { FirebaseListFactoryOpts } from "angularfire2/interfaces";
-import { Observable, Subject, BehaviorSubject } from "rxjs/Rx";
+import { Observable } from "rxjs/Rx";
 import { Budget } from "../models/budget";
 import { BudgetLine } from "../models/budget-line";
 import { AuthService } from "./auth.service";
@@ -10,22 +10,26 @@ import { AuthService } from "./auth.service";
 @Injectable()
 export class BudgetService {
 
-    private subject = new BehaviorSubject<Budget>(null);
-    currentBudget$: Observable<Budget> = this.subject.asObservable();
+    currentBudget$: Observable<Budget>;
 
     sdkDb: any;
     constructor(private db: AngularFireDatabase, @Inject(FirebaseApp) fb: FirebaseApp, private authService: AuthService) {
         this.sdkDb = fb.database().ref();
+
     }
 
     init() {
-        this.currentBudget$ = this.authService.user$
+
+         this.currentBudget$ = this.authService.user$
             .map(user => user.config)
             .filter(userConfig => userConfig != null)
             .map(userConfig => userConfig.currentBudgetId)
             .switchMap(budgetId => {
-                return this.findBudgetById(budgetId);
-            })
+                return this.findBudgetById(budgetId)
+                .map(budget => Budget.fromJson(budget))
+
+            });
+            
 
     }
 
@@ -46,10 +50,7 @@ export class BudgetService {
             }
         })
             .map(results => results[0])
-            .map(budget => {
-                //budget.lines = this.findAllLinesForBudget(budget.$key);
-                return Budget.fromJson(budget);
-            })
+
     }
     //.flatMap(fbojs => Observable.combineLatest(fbojs) )
 

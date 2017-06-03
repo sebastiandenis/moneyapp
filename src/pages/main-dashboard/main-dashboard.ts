@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthService } from "../../services/auth.service";
 import { BudgetService } from "../../services/budget.service";
+import { QuoteService } from "../../services/quote.service";
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -10,17 +12,64 @@ import { BudgetService } from "../../services/budget.service";
 })
 export class MainDashboardPage {
 
+  stroke: number = 20;
+  radius: number = 125;
+  semicircle: boolean = false;
+  rounded: boolean = true;
+  responsive: boolean = true;
+  clockwise: boolean = false;
+  color: string = '#baa0c5';
+  background: string = '#c4d2db';
+  duration: number = 800;
+  animation: string = 'easeOutCubic';
+  animationDelay: number = 1000;
+  animations: string[] = [];
+  gradient: boolean = false;
+  realCurrent: number = 0;
+
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public authService: AuthService,
-    public budgetService: BudgetService) {
+    public budgetService: BudgetService,
+    public quoteService: QuoteService,
+    private translate: TranslateService) {
   }
 
   ionViewDidLoad() {
     //pobierz aktywny budżet
     console.log("Pobieram aktywny budżet...");
- 
+   console.log("Pobieram quote w języku: ",this.translate.currentLang);
+   
+
   }
+
+
+
+  onAddOutgo(budgetId: string) {
+
+  }
+
+  onLines() {
+
+  }
+
+  getOverlayStyle() {
+    let isSemi = this.semicircle;
+    let transform = (isSemi ? '' : 'translateY(-50%) ') + 'translateX(-50%)';
+
+    return {
+      'top': isSemi ? 'auto' : '50%',
+      'bottom': isSemi ? '5%' : 'auto',
+      'left': '50%',
+      'transform': transform,
+      '-moz-transform': transform,
+      '-webkit-transform': transform,
+      'font-size': this.radius / 3.5 + 'px'
+    };
+  }
+
+
 
 }

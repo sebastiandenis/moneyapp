@@ -26,6 +26,7 @@
     "@ionic/storage": "2.0.1",
     "@ngx-translate/core": "^6.0.1",
     "@ngx-translate/http-loader": "0.0.3",
+    "angular-svg-round-progressbar": "^1.1.0",
     "angularfire2": "^4.0.0-rc.0",
     "firebase": "^3.8.0",
     "ionic-angular": "3.2.1",

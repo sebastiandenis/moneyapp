@@ -9,7 +9,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { AuthService } from "../services/auth.service";
 import { BudgetService } from "../services/budget.service";
-
+import { QuoteService } from "../services/quote.service";
 
 @Component({
   templateUrl: 'app.html'
@@ -25,6 +25,7 @@ export class MyApp {
     private authService: AuthService,
     private menuCtrl: MenuController,
     private budgetService: BudgetService,
+    private quoteService: QuoteService,
     platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen) {
@@ -42,9 +43,10 @@ export class MyApp {
 
           this.rootPage = LoginPage;
         } else {
-          console.log("Logged In: ", user);
+   //       console.log("Logged In: ", user);
           this.authService.init();
           this.budgetService.init();
+          this.quoteService.initRandomQuote('money');
           this.loadLang();
           this.rootPage = TabsPage;
         }

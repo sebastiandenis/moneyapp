@@ -19,12 +19,15 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from "angularfire2/auth";
 
 import { AuthService } from "../services/auth.service";
+import { QuoteService } from "../services/quote.service";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 import { MainDashboardPage } from "../pages/main-dashboard/main-dashboard";
 import { LinesPage } from "../pages/lines/lines";
 import { BudgetService } from "../services/budget.service";
+
+import { RoundProgressModule } from 'angular-svg-round-progressbar';
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -55,7 +58,8 @@ export function createTranslateLoader(http: Http) {
       }
     }),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    [RoundProgressModule]
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -74,6 +78,7 @@ export function createTranslateLoader(http: Http) {
     AuthService,
     AngularFireAuth,
     BudgetService,
+    QuoteService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
