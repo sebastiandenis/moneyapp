@@ -61,7 +61,14 @@
 
   </div>
   <ng-template #loadingTpl2>
-    {{'loading' | translate}}...
+   <ion-grid style="height: 100%;">
+    <ion-row align-items-center style="height: 100%;">
+      <ion-col  align-self-center text-center style="background-color: #ff6666;padding-top: 30px;padding-bottom: 30px;">
+        <img src="/assets/img/ball-triangle.svg" style="width: 20%;" align-center><img>
+        <br><br><br><span class="loading">{{'loading' | translate}}...</span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   </ng-template>
 
   <div *ngIf="quoteService.currentQuote$ | async  as currentQuote else loadingTpl3">

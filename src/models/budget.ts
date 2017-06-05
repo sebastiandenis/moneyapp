@@ -4,7 +4,7 @@ import { FirebaseListObservable } from "angularfire2/database";
 export class Budget {
 
     constructor(public $key: string, public name: string, public dateStart: Date, public dateEnd: Date,
-        public totalCash: number, public cashLeft: number, public budgetLines?: FirebaseListObservable<BudgetLine[]>) {
+        public totalCash: number, public cashLeft: number, public lines: any, public budgetLines: FirebaseListObservable<BudgetLine[]>) {
 
     }
 
@@ -32,8 +32,8 @@ export class Budget {
         }
     }
 
-    static fromJson({$key, name, dateStart, dateEnd, totalCash, cashLeft}): Budget {
-        return new Budget($key, name, new Date(dateStart), new Date(dateEnd), totalCash, cashLeft);
+    static fromJson({$key, name, dateStart, dateEnd, totalCash, cashLeft, lines, budgetLines}): Budget {
+        return new Budget($key, name, new Date(dateStart), new Date(dateEnd), totalCash, cashLeft, lines, budgetLines);
     }
 
     static fromJsonArray(json: any[]): Budget[] {

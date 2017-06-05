@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AuthService } from "../../services/auth.service";
 import { BudgetService } from "../../services/budget.service";
 import { QuoteService } from "../../services/quote.service";
 import { TranslateService } from '@ngx-translate/core';
+import { AddOutgoPage } from "../add-outgo/add-outgo";
 
 @IonicPage()
 @Component({
@@ -27,6 +28,8 @@ export class MainDashboardPage {
   gradient: boolean = false;
   realCurrent: number = 0;
 
+  loading: any;
+
 
   constructor(
     public navCtrl: NavController,
@@ -34,20 +37,47 @@ export class MainDashboardPage {
     public authService: AuthService,
     public budgetService: BudgetService,
     public quoteService: QuoteService,
-    private translate: TranslateService) {
+    private translate: TranslateService,
+    private modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
-    //pobierz aktywny budżet
-    console.log("Pobieram aktywny budżet...");
-    console.log("Pobieram quote w języku: ", this.translate.currentLang);
 
 
   }
 
 
 
-  onAddOutgo(budgetId: string) {
+
+
+  onAddOutgo() {
+    const modal = this.modalCtrl.create(AddOutgoPage, {
+      //    budget: this.budget$,
+      // budgetId: this.budgetId,
+      // budgetLines: this.lines,
+      //   budget: this.budget
+    })
+    modal.present();
+
+/*
+    modal.onDidDismiss((selectedLine: BudgetLine) => {
+      if (selectedLine) {
+        // console.log("Cos wybrano: ", selectedLine.name);
+
+        this.budgetsService.addOutgo(this.budget, selectedLine, this.newOutgo)
+          .subscribe(
+          () => {
+            console.log("New outgo saved succesfully.");
+            this.newOutgo = null; //wyzeruj newOutgo
+          },
+          err => console.log(`Error saving outgo ${err}`)
+          )
+      } else {
+        // console.log("Wyjście bez wybrania");
+      }
+
+    });
+    */
 
   }
 
@@ -55,14 +85,14 @@ export class MainDashboardPage {
 
   }
 
-  getColor(left: number, total: number):string {
+  getColor(left: number, total: number): string {
     if (left && total) {
       let p = left / total;
-      if(p<=0.15){
+      if (p <= 0.15) {
         return "#ff6666";
-      }else if(p>=0.50){
+      } else if (p >= 0.50) {
         return "#99cc00";
-      }else{
+      } else {
         return "#ffaa00";
       }
     } else {

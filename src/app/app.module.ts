@@ -25,7 +25,10 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 import { MainDashboardPage } from "../pages/main-dashboard/main-dashboard";
 import { LinesPage } from "../pages/lines/lines";
+import { AddOutgoPage } from "../pages/add-outgo/add-outgo";
 import { BudgetService } from "../services/budget.service";
+
+import {LinesListPage} from "../pages/lines-list/lines-list";
 
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 
@@ -44,7 +47,9 @@ export function createTranslateLoader(http: Http) {
     TabsPage,
     LoginPage,
     MainDashboardPage,
-    LinesPage
+    LinesPage,
+    AddOutgoPage,
+    LinesListPage
   ],
   imports: [
     BrowserModule,
@@ -70,7 +75,9 @@ export function createTranslateLoader(http: Http) {
     TabsPage,
     LoginPage,
     MainDashboardPage,
-    LinesPage
+    LinesPage,
+    AddOutgoPage,
+    LinesListPage
   ],
   providers: [
     StatusBar,

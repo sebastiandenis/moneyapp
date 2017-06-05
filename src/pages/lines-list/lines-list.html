@@ -1,0 +1,38 @@
+<ion-header>
+
+  <ion-navbar color="secondary">
+    <ion-buttons start>
+      <button ion-button (click)="onClose()">
+        <ion-icon name="close" ></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>{{'selectcategory' | translate}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="onSortByCashLeft()">
+        <ion-icon name="cash" ></ion-icon>
+      </button>
+      <button ion-button (click)="onSortByName()">
+        <ion-icon name="list-box" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div *ngIf="budgetService.currentBudget$ | async as currentBudget else loadingTpl">
+    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+    <ion-list>
+      <button class="linelist" ion-item detail-none *ngFor="let line of filteredLines as lines" (click)="onLineSelect(line)">
+     {{line?.name}}
+       <ion-badge [color]="getBadgeColor(line.cashLeft, line.cashToSpend)" item-right>{{line?.cashLeft | number:'1.0-0'}}</ion-badge>
+    </button>
+    </ion-list>
+  </div>
+
+  <ng-template #loadingTpl>
+    {{'loading' | translate}}...
+  </ng-template>
+</ion-content>
