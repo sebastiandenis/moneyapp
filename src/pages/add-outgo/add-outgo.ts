@@ -58,7 +58,7 @@ export class AddOutgoPage implements OnInit {
 
    onSave(exit: boolean) {
     const value = this.addOutgoForm.value;
-    this.budgetService.addOutgo(this.budget, this.choosenLine, value.amount);
+    this.budgetService.addOutgo(this.budget, this.choosenLine, value.amount*1);
     this.addOutgoForm.reset();
     this.choosenLine = null;
     if(exit){

@@ -5,6 +5,7 @@ import { FirebaseListFactoryOpts } from "angularfire2/interfaces";
 import { Observable, Subject } from "rxjs/Rx";
 import { Budget } from "../models/budget";
 import { BudgetLine } from "../models/budget-line";
+import { Outgo } from "../models/outgo";
 import { AuthService } from "./auth.service";
 
 @Injectable()
@@ -27,10 +28,10 @@ export class BudgetService {
             .map(userConfig => userConfig.currentBudgetId)
             .switchMap(budgetId => {
                 return this.findBudgetById(budgetId)
-                  //  .map(budget => Budget.fromJson(budget))
+                //  .map(budget => Budget.fromJson(budget))
 
             })
-           ;
+            ;
 
 
     }
@@ -53,23 +54,23 @@ export class BudgetService {
         })
             .map(results => {
                 results[0].budgetLines = this.findAllLinesForBudget(results[0].$key);
-              //  .map(lines => {
-            //        this.budgetLines$.next(lines);
-            //    });
-                
+                //  .map(lines => {
+                //        this.budgetLines$.next(lines);
+                //    });
+
                 //console.log("Budget: ", results[0]);
                 return results[0];
             })
 
             .map(budget => Budget.fromJson(budget))
-                        
+
 
     }
     //.flatMap(fbojs => Observable.combineLatest(fbojs) )
 
     findBudgetLinesKeysPerBudgetId(id: string, query: FirebaseListFactoryOpts = {}): Observable<string[]> {
         return this.findBudgetById(id)
-           // .do(val => console.log("budget", val))
+            // .do(val => console.log("budget", val))
             .filter(budget => !!budget)
             .switchMap(budget => this.db.list(`budgets/${id}/lines`, query))
             .map(lspb => lspb.map(lpb => lpb.$key))
@@ -160,21 +161,28 @@ export class BudgetService {
 
     addOutgo(budget: Budget, line: BudgetLine, outgoAmount: number) {
         let dataToSave = {}; //tu będą dane do zapisu
-        line.cashLeft -= outgoAmount; //odejmij wartość od linii
-        budget.cashLeft -= outgoAmount;
-        const outgoToSave = Object.assign({}, { amount: outgoAmount }); //tworzenie obiektu outgo
+        console.log("Amount typeof: ", typeof outgoAmount);
+        const outgoToSave = new Outgo('', outgoAmount, line.$key,'','');
+        delete (outgoToSave.$key);
+        delete (outgoToSave.name);
+        delete (outgoToSave.description);
+        console.log("outgo to save type of amount: ", typeof outgoToSave.amount);
+        //   const outgoToSave = Object.assign({}, { amount: outgoAmount});
+        //   Object.assign(outgoToSave, {budgetLineId: line.$key }); //tworzenie obiektu outgo
+        console.log("Outgo to save: ", outgoToSave);
         const newOutgoKey = this.sdkDb.child('outgoes').push().key; // tworzenie klucza dla nowego obiektu outgoes
-        Object.assign(line.outgoes, { [newOutgoKey]: true });
-        line.noOutgoes++; //zwiększanie liczby outgoes
+        //  Object.assign(line.outgoes, { [newOutgoKey]: true });
+        //  line.noOutgoes++; //zwiększanie liczby outgoes
         dataToSave["outgoes/" + newOutgoKey] = outgoToSave; //przygotowanie obiektu w outgoes
-        dataToSave[`budgetLines/${line.$key}`] = line;
+        console.log("Data to save: ", dataToSave);
+        //   dataToSave[`budgetLines/${line.$key}`] = line;
 
         // przygotowanie budżetu do zapisu, nowy obiekt na bazie pierwotnego, zgodny ze strukturą w Firebase
-        const budgetToSave = Object.assign({}, budget);
-        delete (budgetToSave.$key);
-        delete (budgetToSave.budgetLines);
-        dataToSave[`budgets/${budget.$key}`] = budgetToSave;
-    
+        //     const budgetToSave = Object.assign({}, budget);
+        //      delete (budgetToSave.$key);
+        //      delete (budgetToSave.budgetLines);
+        //     dataToSave[`budgets/${budget.$key}`] = budgetToSave;
+
 
         //TODO: przelicz cały budżet w cashLeft
         return this.firebaseUpdate(dataToSave);
