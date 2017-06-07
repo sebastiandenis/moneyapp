@@ -1,3 +1,7 @@
+0.1.6
+  * Add outgo flow with Google Cloud Functions
+
+
 0.1.5
   * Add outgo flow
   * Loading animation
