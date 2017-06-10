@@ -1,3 +1,6 @@
+0.1.7
+  * Update to Ionic 3 Lazy Loading
+
 0.1.6
   * Add outgo flow with Google Cloud Functions
 
