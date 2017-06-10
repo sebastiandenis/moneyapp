@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams, ModalController, ViewController } 
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { BudgetService } from "../../services/budget.service";
 import { BudgetLine } from "../../models/budget-line";
-import { LinesListPage } from "../lines-list/lines-list";
 import { Budget } from "../../models/budget";
 import { Subscription } from "rxjs/Rx";
 
@@ -69,7 +68,7 @@ export class AddOutgoPage implements OnInit {
 
   onChooseLine(lines: BudgetLine[]) {
     //  console.log("BudgetLines from add-outgo: ", lines);
-    const modal = this.modalCtrl.create(LinesListPage, {
+    const modal = this.modalCtrl.create('LinesListPage', {
       //   budgetId: this.budgetId,
 
       budgetLines: lines

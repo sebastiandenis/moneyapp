@@ -1,15 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
-import { TabsPage } from "../tabs/tabs";
 import { NgForm } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 import { TranslateService } from "@ngx-translate/core";
-/**
- * Generated class for the LoginPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -54,7 +48,7 @@ export class LoginPage {
   }
 
   goHome() {
-    this.navCtrl.push(TabsPage);
+    this.navCtrl.push('TabsPage');
   }
 
 }

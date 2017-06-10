@@ -4,7 +4,6 @@ import { AuthService } from "../../services/auth.service";
 import { BudgetService } from "../../services/budget.service";
 import { QuoteService } from "../../services/quote.service";
 import { TranslateService } from '@ngx-translate/core';
-import { AddOutgoPage } from "../add-outgo/add-outgo";
 
 @IonicPage()
 @Component({
@@ -51,33 +50,10 @@ export class MainDashboardPage {
 
 
   onAddOutgo() {
-    const modal = this.modalCtrl.create(AddOutgoPage, {
-      //    budget: this.budget$,
-      // budgetId: this.budgetId,
-      // budgetLines: this.lines,
-      //   budget: this.budget
+    const modal = this.modalCtrl.create('AddOutgoPage', {
+
     })
     modal.present();
-
-/*
-    modal.onDidDismiss((selectedLine: BudgetLine) => {
-      if (selectedLine) {
-        // console.log("Cos wybrano: ", selectedLine.name);
-
-        this.budgetsService.addOutgo(this.budget, selectedLine, this.newOutgo)
-          .subscribe(
-          () => {
-            console.log("New outgo saved succesfully.");
-            this.newOutgo = null; //wyzeruj newOutgo
-          },
-          err => console.log(`Error saving outgo ${err}`)
-          )
-      } else {
-        // console.log("Wyjście bez wybrania");
-      }
-
-    });
-    */
 
   }
 

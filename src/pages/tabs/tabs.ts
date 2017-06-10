@@ -1,17 +1,15 @@
 import { Component } from '@angular/core';
+import { IonicPage } from "ionic-angular";
 
-import { MainDashboardPage } from '../main-dashboard/main-dashboard';
-import { ContactPage } from '../contact/contact';
-import { LinesPage } from '../lines/lines';
-
+@IonicPage()
 @Component({
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
 
-  mainDashboardPage = MainDashboardPage;
-  linesPage = LinesPage;
-  contactPage = ContactPage;
+  mainDashboardPage = 'MainDashboardPage';
+  linesPage = 'LinesPage';
+  contactPage = 'ContactPage';
 
   constructor() {
 

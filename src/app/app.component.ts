@@ -5,8 +5,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TranslateService } from '@ngx-translate/core';
 import firebase from 'firebase';
 
-import { TabsPage } from '../pages/tabs/tabs';
-import { LoginPage } from '../pages/login/login';
 import { AuthService } from "../services/auth.service";
 import { BudgetService } from "../services/budget.service";
 import { QuoteService } from "../services/quote.service";
@@ -15,8 +13,8 @@ import { QuoteService } from "../services/quote.service";
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage: any = TabsPage;
-  loginPage: any = LoginPage;
+  rootPage: any = 'TabsPage';
+  loginPage: any = 'LoginPage';
 
   @ViewChild('nav') navCtrl: NavController;
 
@@ -41,14 +39,14 @@ export class MyApp {
         if (!user) {
           console.log("NOT LOGIN");
 
-          this.rootPage = LoginPage;
+          this.rootPage = 'LoginPage';
         } else {
    //       console.log("Logged In: ", user);
           this.authService.init();
           this.budgetService.init();
           this.quoteService.initRandomQuote('money');
           this.loadLang();
-          this.rootPage = TabsPage;
+          this.rootPage = 'TabsPage';
         }
       });
 
@@ -73,7 +71,7 @@ export class MyApp {
   onLogout() {
     this.authService.logout();
     this.menuCtrl.close();
-    this.navCtrl.setRoot(LoginPage);
+    this.navCtrl.setRoot('LoginPage');
   }
 
   

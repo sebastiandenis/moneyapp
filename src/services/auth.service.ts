@@ -5,7 +5,6 @@ import { AngularFireDatabase } from "angularfire2/database";
 import { AuthInfo } from "./auth-info";
 import firebase from 'firebase';
 import { User } from "../models/user";
-import { UserConfig } from "../models/user-config";
 
 
 
