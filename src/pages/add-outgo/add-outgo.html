@@ -32,12 +32,14 @@
     <ion-grid>
       <ion-row>
         <ion-col col-12>
-          <button type="button" color="danger" (click)="onSave(false)" ion-button block icon-left [disabled]="!(addOutgoForm.valid && choosenLine)">
+          <button type="button" color="danger" (click)="onSave(false)" ion-button block icon-left padding 
+          [disabled]="!(addOutgoForm.valid && choosenLine)" style="padding-top: 32px; padding-bottom:32px;">
        <ion-icon name="add-circle"></ion-icon>{{'saveandaddnext' | translate}}
     </button>
         </ion-col>
         <ion-col col-12>
-          <button type="button" color="danger" (click)="onSave(true)" ion-button block icon-right [disabled]="!(addOutgoForm.valid && choosenLine)">
+          <button type="button" color="danger" (click)="onSave(true)" ion-button block icon-right 
+          [disabled]="!(addOutgoForm.valid && choosenLine)" style="padding-top: 32px; padding-bottom:32px;">
        {{'saveandexit' | translate}}<ion-icon name="exit"></ion-icon>
     </button>
         </ion-col>

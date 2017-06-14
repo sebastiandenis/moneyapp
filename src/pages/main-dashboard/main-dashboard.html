@@ -34,11 +34,11 @@
       <button ion-fab color="danger" (click)="onAddOutgo(budgetId)"><ion-icon name="add"></ion-icon></button>
     </ion-fab>
 
-    <ion-grid no-padding margin-top>
+    <ion-grid no-padding >
       <ion-row>
         <ion-col col-10 offset-1>
           <div class="progress-wrapper">
-            <div class="current" text-center [ngStyle]="getOverlayStyle()"><span style="color: #2096ba;font-size: 3.3rem;">{{currentBudget.getRoundedCashLeft()}}</span><span style="font-size: 1.7rem"> / {{currentBudget.totalCash}}</span>
+            <div class="current" text-center [ngStyle]="getOverlayStyle()"><span style="color: #2096ba;font-size: 3.0rem;">{{currentBudget.getRoundedCashLeft()}}</span><span style="font-size: 1.7rem"> / {{currentBudget.totalCash}}</span>
               <br>
               <span style="font-size: 1.6rem; color: #36384c;" *ngIf="currentBudget.daysLeft()==1">
            {{currentBudget.daysLeft()}} {{ ('dayLeft' | translate)}} 
@@ -52,40 +52,42 @@
             </span>
             </div>
             <round-progress [current]="currentBudget.getRoundedCashLeft()" [max]="currentBudget.totalCash" [responsive]="responsive"
-              [stroke]="stroke" [clockwise]="colckwise" [color]="getColor(currentBudget.cashLeft, currentBudget.totalCash)" [rounded]="rounded"></round-progress>
+              [stroke]="stroke" [clockwise]="colckwise" [color]="getColor(currentBudget.cashLeft, currentBudget.totalCash)"
+              [rounded]="rounded" [background]="getBackgroundColor(currentBudget.cashLeft, currentBudget.totalCash)"></round-progress>
           </div>
         </ion-col>
       </ion-row>
-      <hr>
+      <ion-row>
+        <ion-col>
+           <div *ngIf="quoteService.currentQuote$ | async  as currentQuote">
+            <ion-grid style="height: auto;" padding>
+              <ion-row align-items-center>
+                <ion-col>
+                  <p ion-text color="secondary-dark" class="quote" text-center>{{currentQuote.translations[translate.currentLang]}}</p>
+                  <p ion-text color="secondary-dark" class="quoteperson" text-right>- {{currentQuote.author}}</p>
+                </ion-col>
+              </ion-row>
+
+            </ion-grid>
+
+          </div>
+        </ion-col>
+      </ion-row>
     </ion-grid>
 
   </div>
   <ng-template #loadingTpl2>
-   <ion-grid style="height: 100%;">
-    <ion-row align-items-center style="height: 100%;">
-      <ion-col  align-self-center text-center style="background-color: #ff6666;padding-top: 30px;padding-bottom: 30px;">
-        <img src="/assets/img/ball-triangle.svg" style="width: 20%;" align-center><img>
-        <br><br><br><span class="loading">{{'loading' | translate}}...</span>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  </ng-template>
-
-  <div *ngIf="quoteService.currentQuote$ | async  as currentQuote else loadingTpl3">
-    <ion-grid style="height: auto;" padding>
-      <ion-row align-items-center>
-        <ion-col>
-          <p ion-text color="secondary-dark" class="quote" text-center>{{currentQuote.translations[translate.currentLang]}}</p>
-          <p ion-text color="secondary-dark" class="quoteperson" text-right>- {{currentQuote.author}}</p>
+    <ion-grid style="height: 100%;">
+      <ion-row align-items-center style="height: 100%;">
+        <ion-col align-self-center text-center style="background-color: #ff6666;padding-top: 30px;padding-bottom: 30px;">
+          <img src="assets/img/ball-triangle.svg" style="width: 20%;" align-center><img>
+          <br><br><br><span class="loading">{{'loading' | translate}}...</span>
         </ion-col>
       </ion-row>
-
     </ion-grid>
-
-  </div>
-   <ng-template #loadingTpl3>
-    ...ładuję quote
   </ng-template>
+
+
 
 
 </ion-content>

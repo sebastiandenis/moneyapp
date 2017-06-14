@@ -12,8 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class MainDashboardPage {
 
-  stroke: number = 20;
-  radius: number = 125;
+  stroke: number = 15;
+  radius: number = 115;
   semicircle: boolean = false;
   rounded: boolean = true;
   responsive: boolean = true;
@@ -70,6 +70,21 @@ export class MainDashboardPage {
         return "#99cc00";
       } else {
         return "#ffaa00";
+      }
+    } else {
+      return this.color;
+    }
+  }
+
+  getBackgroundColor(left: number, total: number): string {
+    if (left && total) {
+      let p = left / total;
+      if (p <= 0.15) {
+        return "#ffe6e6";
+      } else if (p >= 0.50) {
+        return "#ecf9ec";
+      } else {
+        return "#fff7e6";
       }
     } else {
       return this.color;

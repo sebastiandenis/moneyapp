@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { LinesPage } from './lines';
 import { TranslateModule } from "@ngx-translate/core";
 
+
 @NgModule({
   declarations: [
     LinesPage,
@@ -15,4 +16,4 @@ import { TranslateModule } from "@ngx-translate/core";
     LinesPage
   ]
 })
-export class LinesPageModule {}
+export class LinesPageModule { }
