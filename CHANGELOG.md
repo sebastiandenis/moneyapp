@@ -1,3 +1,10 @@
+0.1.8
+  * Fix bug with loading animation
+  * Other CSS modifiacations
+  * Cordova settings
+  * Update libraries (among others Firebase SDK to 4.0.0)
+
+
 0.1.7
   * Update to Ionic 3 Lazy Loading
 
