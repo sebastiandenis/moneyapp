@@ -1,35 +1,42 @@
-<!--
-  Generated template for the LinesPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>lines</ion-title>
-  </ion-navbar>
+  <ion-navbar color="secondary">
 
+    <ion-title>{{'lines' | translate}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="onSortByCashLeft()">
+        <ion-icon name="cash" ></ion-icon>
+      </button>
+      <button ion-button (click)="onSortByName()">
+        <ion-icon name="list-box" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
 
-<ion-content no-padding >
-  test
-  <!--
-  <ngx-charts-gauge
-      [view]="view"
-      [scheme]="colorScheme"
-      [results]="data"
-      [min]="0"
-      [max]="5600"
-      [angleSpan]="360"
-      [startAngle]="0"
-      [units]="'cash left'"
-      [bigSegments]="0"
-      [smallSegments]="0"
-      >
-    </ngx-charts-gauge>
--->
+<ion-content no-padding>
+  <ion-content padding>
+    <div *ngIf="budgetService.currentBudget$ | async as currentBudget else loadingTpl">
+      <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+      <ion-list>
+        <button class="linelist" ion-item detail-none *ngFor="let line of filteredLines as lines" (click)="onLineSelect(line)">
+     {{line?.name}}
+       <ion-badge [color]="getBadgeColor(line.cashLeft, line.cashToSpend)" item-right>{{line?.cashLeft | number:'1.0-0'}}</ion-badge>
+    </button>
+      </ion-list>
+    </div>
 
+    <ng-template #loadingTpl>
+      <ion-grid style="height: 100%;">
+        <ion-row align-items-center style="height: 100%;">
+          <ion-col align-self-center text-center style="background-color: #ff6666;padding-top: 30px;padding-bottom: 30px;">
+            <img src="assets/img/ball-triangle.svg" style="width: 20%;" align-center><img>
+            <br><br><br><span class="loading">{{'loading' | translate}}...</span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-template>
 
-</ion-content>
+  </ion-content>
