@@ -161,20 +161,20 @@ export class BudgetService {
 
     addOutgo(budget: Budget, line: BudgetLine, outgoAmount: number) {
         let dataToSave = {}; //tu będą dane do zapisu
-        console.log("Amount typeof: ", typeof outgoAmount);
-        const outgoToSave = new Outgo('', outgoAmount, line.$key,'','');
+        // console.log("Amount typeof: ", typeof outgoAmount);
+        const outgoToSave = new Outgo('', outgoAmount, line.$key, '', '');
         delete (outgoToSave.$key);
         delete (outgoToSave.name);
         delete (outgoToSave.description);
-        console.log("outgo to save type of amount: ", typeof outgoToSave.amount);
+        // console.log("outgo to save type of amount: ", typeof outgoToSave.amount);
         //   const outgoToSave = Object.assign({}, { amount: outgoAmount});
         //   Object.assign(outgoToSave, {budgetLineId: line.$key }); //tworzenie obiektu outgo
-        console.log("Outgo to save: ", outgoToSave);
+        // console.log("Outgo to save: ", outgoToSave);
         const newOutgoKey = this.sdkDb.child('outgoes').push().key; // tworzenie klucza dla nowego obiektu outgoes
         //  Object.assign(line.outgoes, { [newOutgoKey]: true });
         //  line.noOutgoes++; //zwiększanie liczby outgoes
         dataToSave["outgoes/" + newOutgoKey] = outgoToSave; //przygotowanie obiektu w outgoes
-        console.log("Data to save: ", dataToSave);
+        //  console.log("Data to save: ", dataToSave);
         //   dataToSave[`budgetLines/${line.$key}`] = line;
 
         // przygotowanie budżetu do zapisu, nowy obiekt na bazie pierwotnego, zgodny ze strukturą w Firebase

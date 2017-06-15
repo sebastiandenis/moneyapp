@@ -1,7 +1,10 @@
 export class UserConfig {
-    constructor(public defaultLang: string, public currentBudgetId: string) { }
+    constructor(
+        public defaultLang: string,
+        public currentBudgetId: string,
+        public currentSavingId: string) { }
 
-    fromJson({defaultLang, currentBudgetId}): UserConfig {
-        return new UserConfig(defaultLang, currentBudgetId);
+    fromJson({defaultLang, currentBudgetId, currentSavingId}): UserConfig {
+        return new UserConfig(defaultLang, currentBudgetId, currentSavingId);
     }
 }
