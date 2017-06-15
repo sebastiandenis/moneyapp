@@ -1,6 +1,6 @@
 0.1.9
-	* Budget lines screen
-	* Savings db model
+  * Budget lines screen
+  * Savings db model
 
 
 
