@@ -1,8 +1,8 @@
 {
     "name": "moneyapp",
-    "version": "0.1.8",
-    "author": "Ionic Framework",
-    "homepage": "http://ionicframework.com/",
+    "version": "0.1.9",
+    "author": "Sebastian Denis",
+    "homepage": "http://sebastiandenis.com/",
     "private": true,
     "scripts": {
         "clean": "ionic-app-scripts clean",
