@@ -1,5 +1,5 @@
 export class Outgo {
-    constructor(public $key: string, public amount: number, public budgetLineId: string, public name?: string, public description?: string, ) { }
+    constructor(public $key: string, public amount: number, public budgetLineId: string, public name?: string, public description?: string ) { }
 
     static fromJson({$key, amount, budgetLineId, name, desc}): Outgo {
         return new Outgo($key, amount, budgetLineId, name, desc);

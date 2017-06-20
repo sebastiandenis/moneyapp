@@ -1,5 +1,6 @@
 {
     "add": "Add",
+    "addmoneytosavings": "Add money to savings",
     "allbudgets": "All budgets",
     "amount": "Amount",
     "appname": "Money",
@@ -22,9 +23,12 @@
     "outgocategories": "Outgo categories",
     "password": "Password",
     "perday": "per day",
+    "save": "Save",
     "saveandaddnext": "Save and add next",
     "saveandexit": "Save and exit",
+    "savings": "Savings",
     "selectcategory": "Select category",
     "settings": "Settings",
+    "total": "Total",
     "version": "Version"
 }

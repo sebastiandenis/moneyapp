@@ -1,7 +1,12 @@
+0.1.10
+  * Savings basic functionality
+  * Polish translations
+  * Main dashboard gauge size
+
+
 0.1.9
   * Budget lines screen
   * Savings db model
-
 
 
 0.1.8

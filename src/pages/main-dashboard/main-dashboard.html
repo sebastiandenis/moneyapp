@@ -31,13 +31,13 @@
 <ion-content padding>
   <div *ngIf="budgetService.currentBudget$ | async as currentBudget else loadingTpl2">
     <ion-fab right top>
-      <button ion-fab color="danger" (click)="onAddOutgo(budgetId)"><ion-icon name="add"></ion-icon></button>
+      <button ion-fab color="danger" (click)="onAddOutgo(budgetId)"><ion-icon name="cash"></ion-icon></button>
     </ion-fab>
 
     <ion-grid no-padding >
       <ion-row>
         <ion-col col-10 offset-1>
-          <div class="progress-wrapper">
+          <div class="progress-wrapper" padding-left padding-right>
             <div class="current" text-center [ngStyle]="getOverlayStyle()"><span style="color: #2096ba;font-size: 3.0rem;">{{currentBudget.getRoundedCashLeft()}}</span><span style="font-size: 1.7rem"> / {{currentBudget.totalCash}}</span>
               <br>
               <span style="font-size: 1.6rem; color: #36384c;" *ngIf="currentBudget.daysLeft()==1">
