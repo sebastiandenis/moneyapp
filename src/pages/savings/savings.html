@@ -17,7 +17,7 @@
         <ion-icon name="list-box" ></ion-icon>
       </button>
 
-      <button ion-button icon-only margin-left>
+      <button ion-button icon-only margin-left (click)="onShowPopover($event)">
         <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
@@ -39,7 +39,7 @@
         <span style="color: #ff6666">{{'total' | translate}}</span>
         <ion-badge [color]="'warning'" item-right style="font-size: 1.6rem;">{{currentSaving.totalCash | number:'1.0-0'}}</ion-badge>
       </ion-item>
-      <button class="linelist" ion-item detail-none *ngFor="let line of filteredLines as lines" (click)="onLineSelect(line)">
+      <button class="linelist" ion-item detail-none *ngFor="let line of filteredLines as lines" (click)="onLineSelect(line, currentSaving.$key)">
      {{line?.name}}
        <ion-badge [color]="'success'" item-right >{{line?.cashLeft | number:'1.0-0'}}</ion-badge>
     </button>

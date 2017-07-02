@@ -1,19 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { SavingsPage } from './savings';
+import { EditSavingLinePage } from './edit-saving-line';
 import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
-    SavingsPage,
-
+    EditSavingLinePage,
   ],
   imports: [
-    IonicPageModule.forChild(SavingsPage),
+    IonicPageModule.forChild(EditSavingLinePage),
     TranslateModule.forChild()
   ],
   exports: [
-    SavingsPage
+    EditSavingLinePage
   ]
 })
-export class SavingsPageModule {}
+export class EditSavingLinePageModule { }

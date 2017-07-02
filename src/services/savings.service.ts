@@ -127,16 +127,33 @@ export class SavingsService {
         return subject.asObservable();
     }
 
+
+
     updateSavingLine(lineId: string, line: SavingLine): Observable<any> {
         const lineToSave = Object.assign({}, line);
         delete (lineToSave.$key);
+        //  console.log("SavingLine to save: ", lineToSave);
 
         let dataToSave = {};
+        if (!lineId) {
+            //jeżeli nowa linia 
+            lineId = this.sdkDb.child('savingLines').push().key; //utwórz nowy klucz
+        }
         dataToSave[`savingLines/${lineId}`] = lineToSave;
 
         return this.firebaseUpdate(dataToSave);
 
     }
+
+    removeSavingLine(savingId: string, lineId: string): Observable<any> {
+        let dataToRemove = {};
+        dataToRemove[`savings/${savingId}/lines/${lineId}`] = null;
+
+        //reszta usuwana za pomocą funkcji GCF
+
+        return this.firebaseUpdate(dataToRemove);
+    }
+
 
     addSavingItem(saving: Saving, line: SavingLine, savingItemAmount: number) {
         let dataToSave = {}; //tu będą dane do zapisu

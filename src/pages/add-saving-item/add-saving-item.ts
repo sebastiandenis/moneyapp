@@ -28,7 +28,7 @@ export class AddSavingItemPage implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.savingsService.currentSaving$.subscribe(
+    this.subscription = this.savingsService.currentSaving$.subscribe(
       (saving) => this.saving = saving
     )
   }

@@ -1,3 +1,6 @@
+0.2.0
+  * Savings: edit/delete/add
+
 0.1.10
   * Savings basic functionality
   * Polish translations
