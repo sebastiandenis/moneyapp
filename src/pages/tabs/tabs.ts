@@ -10,6 +10,7 @@ export class TabsPage {
   mainDashboardPage = 'MainDashboardPage';
   linesPage = 'LinesPage';
   contactPage = 'ContactPage';
+  savingsPage = 'SavingsPage';
 
   constructor() {
 

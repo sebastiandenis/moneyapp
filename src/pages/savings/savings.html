@@ -1,0 +1,60 @@
+<ion-header>
+
+  <ion-navbar color="secondary">
+    <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+
+    <ion-title>{{'savings' | translate}}</ion-title>
+
+    <ion-buttons end >
+
+
+      <button ion-button icon-only small (click)="onSortByCashLeft()" style="font-size: 0.9rem;">
+        <ion-icon name="cash" ></ion-icon>
+      </button>
+      <button ion-button small icon-only (click)="onSortByName()" style="font-size: 0.9rem;">
+        <ion-icon name="list-box" ></ion-icon>
+      </button>
+
+      <button ion-button icon-only margin-left (click)="onShowPopover($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+
+
+
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+
+
+  <div *ngIf="savingsService.currentSaving$ | async as currentSaving else loadingTpl">
+
+
+    <ion-list>
+      <ion-item padding-top>
+        <span style="color: #ff6666">{{'total' | translate}}</span>
+        <ion-badge [color]="'warning'" item-right style="font-size: 1.6rem;">{{currentSaving.totalCash | number:'1.0-0'}}</ion-badge>
+      </ion-item>
+      <button class="linelist" ion-item detail-none *ngFor="let line of filteredLines as lines" (click)="onLineSelect(line, currentSaving.$key)">
+     {{line?.name}}
+       <ion-badge [color]="'success'" item-right >{{line?.cashLeft | number:'1.0-0'}}</ion-badge>
+    </button>
+    </ion-list>
+  
+  </div>
+
+  <ng-template #loadingTpl>
+    <ion-grid style="height: 100%;">
+      <ion-row align-items-center style="height: 100%;">
+        <ion-col align-self-center text-center style="background-color: #ff6666;padding-top: 30px;padding-bottom: 30px;">
+          <img src="assets/img/ball-triangle.svg" style="width: 20%;" align-center><img>
+          <br><br><br><span class="loading">{{'loading' | translate}}...</span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+</ion-content>

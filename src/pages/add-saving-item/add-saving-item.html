@@ -1,0 +1,44 @@
+<ion-header>
+
+  <ion-navbar color="secondary">
+    <ion-title>{{'addmoneytosavings' | translate}}</ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="onClose()">
+        <ion-icon name="close" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+
+<ion-content padding>
+  <form [formGroup]="addSavingItemForm" *ngIf="savingsService.currentSaving$ | async as currentSaving else loadingTpl1">
+    <ion-list>
+      <ion-item>
+        <ion-label stacked color="danger">{{'amount' | translate}}:</ion-label>
+        <ion-input type="number" text-center formControlName="amount" class="bigfont" ion-text color="warning"></ion-input>
+      </ion-item>
+
+
+    </ion-list>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12>
+          <button type="button" color="danger" (click)="onSave(true)" ion-button block icon-right 
+          [disabled]="!(addSavingItemForm.valid && choosenLine)" style="padding-top: 32px; padding-bottom:32px;">
+       {{'save' | translate}}<ion-icon name="exit"></ion-icon>
+    </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </form>
+
+  <ng-template #loadingTpl1>
+    {{'loading' | translate}}...
+  </ng-template>
+
+</ion-content>

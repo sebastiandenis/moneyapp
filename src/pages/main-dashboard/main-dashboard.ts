@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class MainDashboardPage {
 
   stroke: number = 15;
-  radius: number = 115;
+  radius: number = 105;
   semicircle: boolean = false;
   rounded: boolean = true;
   responsive: boolean = true;

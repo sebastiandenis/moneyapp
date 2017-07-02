@@ -7,6 +7,7 @@ import firebase from 'firebase';
 
 import { AuthService } from "../services/auth.service";
 import { BudgetService } from "../services/budget.service";
+import { SavingsService } from "../services/savings.service";
 import { QuoteService } from "../services/quote.service";
 
 @Component({
@@ -23,6 +24,7 @@ export class MyApp {
     private authService: AuthService,
     private menuCtrl: MenuController,
     private budgetService: BudgetService,
+    private savingsService: SavingsService,
     private quoteService: QuoteService,
     platform: Platform,
     statusBar: StatusBar,
@@ -41,9 +43,10 @@ export class MyApp {
 
           this.rootPage = 'LoginPage';
         } else {
-   //       console.log("Logged In: ", user);
+          //       console.log("Logged In: ", user);
           this.authService.init();
           this.budgetService.init();
+          this.savingsService.init();
           this.quoteService.initRandomQuote('money');
           this.loadLang();
           this.rootPage = 'TabsPage';
@@ -74,7 +77,7 @@ export class MyApp {
     this.navCtrl.setRoot('LoginPage');
   }
 
-  
+
   onLoad(page: any) {
     this.navCtrl.setRoot(page);
     this.menuCtrl.close();

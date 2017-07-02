@@ -19,7 +19,9 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 import { BudgetService } from "../services/budget.service";
+import { SavingsService } from "../services/savings.service";
 
+import { SavingsPopoverPage } from '../pages/savings/savings-popover';
 
 
 export function createTranslateLoader(http: Http) {
@@ -30,7 +32,8 @@ export function createTranslateLoader(http: Http) {
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    SavingsPopoverPage
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,8 @@ export function createTranslateLoader(http: Http) {
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    SavingsPopoverPage
   ],
   providers: [
     StatusBar,
@@ -58,6 +62,7 @@ export function createTranslateLoader(http: Http) {
     AuthService,
     AngularFireAuth,
     BudgetService,
+    SavingsService,
     QuoteService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
