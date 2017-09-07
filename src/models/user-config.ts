@@ -4,7 +4,7 @@ export class UserConfig {
         public currentBudgetId: string,
         public currentSavingId: string) { }
 
-    fromJson({defaultLang, currentBudgetId, currentSavingId}): UserConfig {
+    static fromJson({defaultLang, currentBudgetId, currentSavingId}): UserConfig {
         return new UserConfig(defaultLang, currentBudgetId, currentSavingId);
     }
 }

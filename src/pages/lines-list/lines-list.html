@@ -10,7 +10,7 @@
     <ion-title>{{'selectcategory' | translate}}</ion-title>
 
     <ion-buttons end>
-      <button ion-button (click)="onSortByCashLeft()" >
+      <button ion-button (click)="onSortByCashLeft()">
         <ion-icon name="cash" ></ion-icon>
       </button>
       <button ion-button (click)="onSortByName()">
@@ -22,17 +22,19 @@
 
 
 <ion-content padding>
-  <div *ngIf="budgetService.currentBudget$ | async as currentBudget else loadingTpl">
-    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
-    <ion-list>
-      <button class="linelist" ion-item detail-none *ngFor="let line of filteredLines as lines" (click)="onLineSelect(line)">
+  <div *ngIf="budgetLines$ | async as blines else loadingTpl">
+    <div *ngIf="filteredLines$ | async as lines else loadingTpl">
+      <ion-searchbar (ionInput)="getItems($event, lines, blines)" [ngModel]="searchQuery$ | async"></ion-searchbar>
+      <ion-list>
+        <button class="linelist" ion-item detail-none *ngFor="let line of lines" (click)="onLineSelect(line)">
      {{line?.name}}
        <ion-badge [color]="getBadgeColor(line.cashLeft, line.cashToSpend)" item-right>{{line?.cashLeft | number:'1.0-0'}}</ion-badge>
     </button>
-    </ion-list>
+      </ion-list>
+    </div>
   </div>
 
-    <ng-template #loadingTpl>
+  <ng-template #loadingTpl>
     <ion-grid style="height: 100%;">
       <ion-row align-items-center style="height: 100%;">
         <ion-col align-self-center text-center style="background-color: #ff6666;padding-top: 30px;padding-bottom: 30px;">

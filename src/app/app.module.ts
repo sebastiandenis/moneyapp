@@ -23,10 +23,19 @@ import { SavingsService } from "../services/savings.service";
 
 import { SavingsPopoverPage } from '../pages/savings/savings-popover';
 
+import { StoreModule } from "@ngrx/store";
+import { EffectsModule } from "@ngrx/effects";
+import { reducers } from './store/app.reducers';
+
+import { LoadDefaultBudgetEffectService } from "./store/effects/load-default-budget-effect.service";
+import { LoadDefaultBudgetLinesEffectService } from "./store/effects/load-default-budget-lines-effect.service";
+import { LoadRandomQuoteEffectService } from "./store/effects/load-random-quote-effect.service";
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
 
 
 
@@ -39,6 +48,12 @@ export function createTranslateLoader(http: Http) {
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([LoadDefaultBudgetEffectService, LoadDefaultBudgetLinesEffectService,
+      LoadRandomQuoteEffectService]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25 //  Retains last 25 states
+    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

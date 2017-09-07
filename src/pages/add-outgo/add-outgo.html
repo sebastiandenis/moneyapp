@@ -13,7 +13,7 @@
 
 
 <ion-content padding>
-  <form [formGroup]="addOutgoForm" *ngIf="budgetService.currentBudget$ | async as currentBudget else loadingTpl1">
+  <form [formGroup]="addOutgoForm" *ngIf="budget$ | async as currentBudget else loadingTpl1">
     <ion-list>
       <ion-item>
         <ion-label stacked color="danger">{{'amount' | translate}}:</ion-label>

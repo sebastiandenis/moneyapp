@@ -1,20 +1,18 @@
-import { Injectable, Inject } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { AngularFireDatabase } from "angularfire2/database";
-import { FirebaseListFactoryOpts } from "angularfire2/interfaces";
-import { FirebaseApp } from "angularfire2";
+import * as firebase from 'firebase/app';
 import { Observable } from "rxjs/Rx";
-import { Quote } from "../models/quote";
-import { QuoteCategory } from "../models/quote-category";
+import { Quote } from "../models/quote.model";
+import { QuoteCategory } from "../models/quote-category.model";
 
 
 @Injectable()
 export class QuoteService {
 
-    currentQuote$: Observable<Quote> ;
 
     sdkDb: any;
-    constructor(private db: AngularFireDatabase, @Inject(FirebaseApp) fb: FirebaseApp) {
-        this.sdkDb = fb.database().ref();
+    constructor(private db: AngularFireDatabase) {
+        this.sdkDb = firebase.database().ref();
     }
 
     findAllQuotes(): Observable<Quote[]> {
@@ -61,7 +59,7 @@ export class QuoteService {
     }
 
 
-    findQuotesKeysPerCategoryId(categoryId: string, query: FirebaseListFactoryOpts = {}): Observable<string[]> {
+    findQuotesKeysPerCategoryId(categoryId: string, query = {}): Observable<string[]> {
         return this.findQuoteCategoryById(categoryId)
             .filter(category => !!category)
             .switchMap(category => this.db.list(`categoriesOfQuotes/${categoryId}/quotes`, query))
@@ -79,19 +77,21 @@ export class QuoteService {
         return this.findQuotesForKeys(this.findQuotesKeysPerCategoryId(categoryId));
     }
 
-    initRandomQuote(categoryId: string) {
+
+
+    loadRandomQuote(categoryId: string) {
         let rand = 0;
 
-        this.currentQuote$ = this.findAllQuotesForCateogryId(categoryId)
-        .filter(quotes => !!quotes)
-        .map(Quote.fromJsonArray)
-        .map(quotes => {
-            rand =  Math.floor((Math.random() * quotes.length));
-            return quotes[rand];
-        })
-        .switchMap((randomQuote:Quote) => {
-            return this.findQuoteById(randomQuote.$key)
-        })
+        return this.findAllQuotesForCateogryId(categoryId)
+            .filter(quotes => !!quotes)
+            .map(Quote.fromJsonArray)
+            .map(quotes => {
+                rand = Math.floor((Math.random() * quotes.length));
+                return quotes[rand];
+            })
+            .switchMap((randomQuote: Quote) => {
+                return this.findQuoteById(randomQuote.$key)
+            })
     }
 
 }

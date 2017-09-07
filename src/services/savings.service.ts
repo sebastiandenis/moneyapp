@@ -1,7 +1,6 @@
-import { Injectable, Inject } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { AngularFireDatabase } from "angularfire2/database";
-import { FirebaseApp } from "angularfire2";
-import { FirebaseListFactoryOpts } from "angularfire2/interfaces";
+import * as firebase from 'firebase/app';
 import { Observable, Subject } from "rxjs/Rx";
 import { AuthService } from "./auth.service";
 import { Saving } from "../models/saving";
@@ -15,15 +14,14 @@ export class SavingsService {
 
 
     sdkDb: any;
-    constructor(private db: AngularFireDatabase, @Inject(FirebaseApp) fb: FirebaseApp, private authService: AuthService) {
-        this.sdkDb = fb.database().ref();
+    constructor(private db: AngularFireDatabase, private authService: AuthService) {
+        this.sdkDb = firebase.database().ref();
 
     }
 
     init() {
 
-        this.currentSaving$ = this.authService.user$
-            .map(user => user.config)
+        this.currentSaving$ = this.authService.userConfig$
             .filter(userConfig => userConfig != null)
             .map(userConfig => userConfig.currentSavingId)
             .switchMap(savingId => {
@@ -58,10 +56,8 @@ export class SavingsService {
 
     }
 
-    findSavingLinesKeysPerSavingId(id: string, query: FirebaseListFactoryOpts = {}): Observable<string[]> {
-        return this.findSavingById(id)
-            .filter(saving => !!saving)
-            .switchMap(saving => this.db.list(`savings/${id}/lines`, query))
+    findSavingLinesKeysPerSavingId(id: string, query = {}): Observable<string[]> {
+        return  this.db.list(`linesInSavings/${id}`, query)
             .map(lspb => lspb.map(lpb => lpb.$key))
     }
 

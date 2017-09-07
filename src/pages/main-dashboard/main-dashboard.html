@@ -7,7 +7,7 @@
       </button>
 
     <ion-title small text-left>
-      <div *ngIf="budgetService.currentBudget$ | async as currentBudget else loadingTpl">
+      <div *ngIf="budget$ | async as currentBudget else loadingTpl">
         {{currentBudget?.name}}
       </div>
       <ng-template #loadingTpl>
@@ -29,29 +29,29 @@
 
 
 <ion-content padding>
-  <div *ngIf="budgetService.currentBudget$ | async as currentBudget else loadingTpl2">
+  <div *ngIf="budget$ | async as currentBudget else loadingTpl2">
     <ion-fab right top>
       <button ion-fab color="danger" (click)="onAddOutgo(budgetId)"><ion-icon name="cash"></ion-icon></button>
     </ion-fab>
 
-    <ion-grid no-padding >
+    <ion-grid no-padding>
       <ion-row>
         <ion-col col-10 offset-1>
           <div class="progress-wrapper" padding-left padding-right>
-            <div class="current" text-center [ngStyle]="getOverlayStyle()"><span style="color: #2096ba;font-size: 3.0rem;">{{currentBudget.getRoundedCashLeft()}}</span><span style="font-size: 1.7rem"> / {{currentBudget.totalCash}}</span>
+            <div class="current" text-center [ngStyle]="getOverlayStyle()"><span style="color: #2096ba;font-size: 3.0rem;">{{getRoundedCashLeft(currentBudget.cashLeft)}}</span><span style="font-size: 1.7rem"> / {{currentBudget.totalCash}}</span>
               <br>
-              <span style="font-size: 1.6rem; color: #36384c;" *ngIf="currentBudget.daysLeft()==1">
-           {{currentBudget.daysLeft()}} {{ ('dayLeft' | translate)}} 
+              <span style="font-size: 1.6rem; color: #36384c;" *ngIf="daysLeft(currentBudget.dateEnd)==1">
+           {{daysLeft(currentBudget.dateEnd)}} {{ ('dayLeft' | translate)}} 
             </span>
-              <span style="font-size: 1.6rem; color: #36384c;" *ngIf="currentBudget.daysLeft()!=1">
-           {{currentBudget.daysLeft()}} {{ ('daysLeft' | translate)}} 
+              <span style="font-size: 1.6rem; color: #36384c;" *ngIf="daysLeft(currentBudget.dateEnd)!=1">
+           {{daysLeft(currentBudget.dateEnd)}} {{ ('daysLeft' | translate)}} 
             </span>
               <br>
-              <span style="font-size: 1.7rem; color: #36384c;" *ngIf="currentBudget.daysLeft()!=0">
-            {{currentBudget.perDay()}} {{'perday' | translate}}
+              <span style="font-size: 1.7rem; color: #36384c;" *ngIf="daysLeft(currentBudget.dateEnd)!=0">
+            {{perDay(currentBudget.cashLeft, currentBudget.dateEnd)}} {{'perday' | translate}}
             </span>
             </div>
-            <round-progress [current]="currentBudget.getRoundedCashLeft()" [max]="currentBudget.totalCash" [responsive]="responsive"
+            <round-progress [current]="getRoundedCashLeft(currentBudget.cashLeft)" [max]="currentBudget.totalCash" [responsive]="responsive"
               [stroke]="stroke" [clockwise]="colckwise" [color]="getColor(currentBudget.cashLeft, currentBudget.totalCash)"
               [rounded]="rounded" [background]="getBackgroundColor(currentBudget.cashLeft, currentBudget.totalCash)"></round-progress>
           </div>
@@ -59,7 +59,7 @@
       </ion-row>
       <ion-row>
         <ion-col>
-           <div *ngIf="quoteService.currentQuote$ | async  as currentQuote">
+          <div *ngIf="quote$ | async  as currentQuote">
             <ion-grid style="height: auto;" padding>
               <ion-row align-items-center>
                 <ion-col>

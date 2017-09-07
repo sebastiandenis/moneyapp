@@ -1,12 +1,12 @@
-import { Injectable, Inject } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { AngularFireDatabase } from "angularfire2/database";
-import { FirebaseApp } from "angularfire2";
-import { FirebaseListFactoryOpts } from "angularfire2/interfaces";
+import * as firebase from 'firebase/app';
 import { Observable, Subject } from "rxjs/Rx";
-import { Budget } from "../models/budget";
-import { BudgetLine } from "../models/budget-line";
+import { Budget } from "../models/budget.model";
+import { BudgetLine } from "../models/budget-line.model";
 import { Outgo } from "../models/outgo";
 import { AuthService } from "./auth.service";
+
 
 @Injectable()
 export class BudgetService {
@@ -15,34 +15,46 @@ export class BudgetService {
 
 
     sdkDb: any;
-    constructor(private db: AngularFireDatabase, @Inject(FirebaseApp) fb: FirebaseApp, private authService: AuthService) {
-        this.sdkDb = fb.database().ref();
+    constructor(private db: AngularFireDatabase, private authService: AuthService) {
+        this.sdkDb = firebase.database().ref();
+
 
     }
 
+    /*
     init() {
+        this.currentBudget$ = this.findDefaultBudget();
+    }
 
-        this.currentBudget$ = this.authService.user$
-            .map(user => user.config)
+    */
+
+    findDefaultBudget(): Observable<Budget> {
+        return this.authService.userConfig$
             .filter(userConfig => userConfig != null)
             .map(userConfig => userConfig.currentBudgetId)
             .switchMap(budgetId => {
-                return this.findBudgetById(budgetId)
-                //  .map(budget => Budget.fromJson(budget))
+                // console.log("Poszukiwany budgetId: ", budgetId);
+                return this.findBudgetById(budgetId);
+            });
+    }
 
-            })
-            ;
-
-
+    findDefaultBudgetLines(): Observable<BudgetLine[]> {
+        console.log("Wywołuję findDefaultBudgetLines()...");
+        return this.findDefaultBudget()
+            .switchMap(budget => {
+                console.log("Poszukiwanie budgetLines dla budgetId: ", budget.$key);
+                return this.findAllLinesForBudgetId(budget.$key);
+            });
     }
 
 
 
-
-    findBudgetLines(): Observable<BudgetLine[]> {
-        return this.currentBudget$
-            .switchMap((budget) => budget.budgetLines);
-    }
+    /*
+        findBudgetLines(): Observable<BudgetLine[]> {
+            return this.currentBudget$
+                .switchMap((budget) => budget.budgetLines);
+        }
+        */
 
     findBudgetById(id: string): Observable<Budget> {
         return this.db.list('budgets', {
@@ -52,27 +64,30 @@ export class BudgetService {
                 limitToFirst: 1
             }
         })
-            .map(results => {
-                results[0].budgetLines = this.findAllLinesForBudget(results[0].$key);
-                //  .map(lines => {
-                //        this.budgetLines$.next(lines);
-                //    });
-
-                //console.log("Budget: ", results[0]);
-                return results[0];
+            /*
+                .map(results => {
+                    results[0].budgetLines = this.findAllLinesForBudget(results[0].$key);
+                    //  .map(lines => {
+                    //        this.budgetLines$.next(lines);
+                    //    });
+    
+                    //console.log("Budget: ", results[0]);
+                    return results[0];
+                })
+    
+                */
+            // .do(() => console.log("Pobieranie budżetu...12345, ID:", id))
+            .map((budget) => {
+                //  console.log("Pobrany budżet: ", budget[0]);
+                return Budget.fromJson(budget[0]);
             })
-
-            .map(budget => Budget.fromJson(budget))
 
 
     }
     //.flatMap(fbojs => Observable.combineLatest(fbojs) )
 
-    findBudgetLinesKeysPerBudgetId(id: string, query: FirebaseListFactoryOpts = {}): Observable<string[]> {
-        return this.findBudgetById(id)
-            // .do(val => console.log("budget", val))
-            .filter(budget => !!budget)
-            .switchMap(budget => this.db.list(`budgets/${id}/lines`, query))
+    findBudgetLinesKeysPerBudgetId(id: string, query = {}): Observable<string[]> {
+        return this.db.list(`linesInBudget/${id}`, query)
             .map(lspb => lspb.map(lpb => lpb.$key))
     }
 
@@ -82,53 +97,13 @@ export class BudgetService {
             .flatMap(fbojs => Observable.combineLatest(fbojs));
     }
 
-    findAllLinesForBudget(budgetId: string): Observable<BudgetLine[]> {
+    findAllLinesForBudgetId(budgetId: string): Observable<BudgetLine[]> {
         return this.findBudgetLinesForKeys(this.findBudgetLinesKeysPerBudgetId(budgetId));
     }
 
-    sortByName(lines: BudgetLine[], isDesc: boolean = false): BudgetLine[] {
-
-        if (lines) {
-            lines.sort(function (a, b) {
-                var nameA = a.name.toUpperCase();
-                var nameB = b.name.toUpperCase();
-                if (nameA < nameB) {
-                    return isDesc ? 1 : -1;
-                }
-                if (nameA > nameB) {
-                    return isDesc ? -1 : 1;
-                }
-                return 0;
-            });
-            return lines;
-        } else {
-            return []
-        };
-    }
 
 
-    sortByCashLeft(lines: BudgetLine[], isDesc: boolean = false): BudgetLine[] {
 
-        if (lines) {
-            lines.sort(function (a, b) {
-                return isDesc ? b.cashLeft - a.cashLeft : a.cashLeft - b.cashLeft;
-            });
-            return lines;
-        } else {
-            return []
-        };
-    }
-
-    sortByNoOutgoes(lines: BudgetLine[], isDesc: boolean = false): BudgetLine[] {
-        if (lines) {
-            lines.sort(function (a, b) {
-                return isDesc ? b.noOutgoes - a.noOutgoes : a.noOutgoes - b.noOutgoes;
-            });
-            return lines;
-        } else {
-            return []
-        };
-    }
 
     firebaseUpdate(dataToSave) {
         const subject = new Subject();

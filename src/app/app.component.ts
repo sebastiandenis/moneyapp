@@ -6,9 +6,11 @@ import { TranslateService } from '@ngx-translate/core';
 import firebase from 'firebase';
 
 import { AuthService } from "../services/auth.service";
-import { BudgetService } from "../services/budget.service";
 import { SavingsService } from "../services/savings.service";
-import { QuoteService } from "../services/quote.service";
+import { QuoteCategory } from "../models/quote.model";
+import { Store } from "@ngrx/store";
+import * as fromApp from './store/app.reducers';
+import * as appActions from './store/actions';
 
 @Component({
   templateUrl: 'app.html'
@@ -23,12 +25,11 @@ export class MyApp {
     private translate: TranslateService,
     private authService: AuthService,
     private menuCtrl: MenuController,
-    private budgetService: BudgetService,
     private savingsService: SavingsService,
-    private quoteService: QuoteService,
     platform: Platform,
     statusBar: StatusBar,
-    splashScreen: SplashScreen) {
+    splashScreen: SplashScreen,
+    private store: Store<fromApp.AppState>) {
 
     translate.addLangs(["en"]);
     translate.addLangs(["pl"]);
@@ -45,10 +46,12 @@ export class MyApp {
         } else {
           //       console.log("Logged In: ", user);
           this.authService.init();
-          this.budgetService.init();
+          //   this.budgetService.init();
           this.savingsService.init();
-          this.quoteService.initRandomQuote('money');
           this.loadLang();
+          this.store.dispatch(new appActions.LoadRandomQuoteAction(QuoteCategory.MONEY));
+          this.store.dispatch(new appActions.LoadDefaultBudgetAction());
+          this.store.dispatch(new appActions.LoadDefaultBudgetLinesAction());
           this.rootPage = 'TabsPage';
         }
       });
@@ -64,9 +67,10 @@ export class MyApp {
   }
 
   loadLang() {
-    this.authService.user$.subscribe(
-      (user) => {
-        this.translate.use(user.config.defaultLang);
+    this.authService.userConfig$.subscribe(
+      (userConfig) => {
+        console.log("Pobrałem userConfig", userConfig);
+        this.translate.use(userConfig.defaultLang);
       }
     );
   }

@@ -5,6 +5,7 @@ import { AngularFireDatabase } from "angularfire2/database";
 import { AuthInfo } from "./auth-info";
 import firebase from 'firebase';
 import { User } from "../models/user";
+import { UserConfig } from "../models/user-config";
 
 
 
@@ -17,6 +18,7 @@ export class AuthService {
     authInfo$: BehaviorSubject<AuthInfo> = new BehaviorSubject<AuthInfo>(AuthService.UNKNOWN_AUTH);
     private subject = new BehaviorSubject(AuthService.UNKNOWN_USER);
     user$: Observable<User> = this.subject.asObservable();
+    userConfig$: Observable<UserConfig>;
 
     constructor(
         private afAuth: AngularFireAuth,
@@ -27,8 +29,9 @@ export class AuthService {
     init() {
         const authInfo = new AuthInfo(this.getActiveUser().uid);
         this.user$ = this.findUserById(this.getActiveUser().uid);
+        this.userConfig$ = this.findUserConfigByUserId(this.getActiveUser().uid);
         this.authInfo$.next(authInfo);
- 
+
     }
 
 
@@ -46,6 +49,24 @@ export class AuthService {
                 return User.fromJson(user);
             })
 
+    }
+
+    findUserConfigByUserId(userId: string): Observable<UserConfig> {
+        return this.db.list('usersConfig', {
+            query: {
+                orderByKey: true,
+                equalTo: userId,
+                limitToFirst: 1
+            }
+        })
+            .map(result => result[0])
+            .do(userConfig =>{
+                console.log("Poszukiwany userId: ", userId);
+                console.log("User config: ", userConfig);
+            })
+            .map(userConfig => {
+                return UserConfig.fromJson(userConfig);
+            })
     }
 
 

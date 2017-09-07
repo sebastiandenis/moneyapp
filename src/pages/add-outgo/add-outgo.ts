@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { BudgetService } from "../../services/budget.service";
-import { BudgetLine } from "../../models/budget-line";
-import { Budget } from "../../models/budget";
-import { Subscription } from "rxjs/Rx";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs/Observable";
+import * as fromApp from '../../app/store/app.reducers';
+import { BudgetLine } from "../../models/budget-line.model";
+import { Budget } from "../../models/budget.model";
 
 
 @IonicPage()
@@ -16,22 +17,20 @@ export class AddOutgoPage implements OnInit {
 
   choosenLine: BudgetLine;
   addOutgoForm: FormGroup;
-  budget: Budget;
-  subscription: Subscription;
+  budget$: Observable<Budget>;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public budgetService: BudgetService,
+    private store: Store<fromApp.AppState>,
     private viewCtrl: ViewController,
     private modalCtrl: ModalController) {
   }
 
   ngOnInit() {
     this.initForm();
-    this.budgetService.currentBudget$.subscribe(
-      (budget) => this.budget = budget
-    )
+    this.budget$ = this.store.select(state => state.storeData.budget);
+
   }
 
   private initForm() {
@@ -45,22 +44,20 @@ export class AddOutgoPage implements OnInit {
     // console.log('ionViewDidLoad AddOutgoPage');
   }
 
-  ionViewWillUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
+
 
   onClose() {
     this.viewCtrl.dismiss();
   }
 
-   onSave(exit: boolean) {
+  onSave(exit: boolean) {
     const value = this.addOutgoForm.value;
+    /* TODO: zamienić na akcję
     this.budgetService.addOutgo(this.budget, this.choosenLine, value.amount*1);
+    */
     this.addOutgoForm.reset();
     this.choosenLine = null;
-    if(exit){
+    if (exit) {
       this.onClose();
     }
   }

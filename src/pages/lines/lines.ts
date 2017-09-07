@@ -1,65 +1,54 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
-import { BudgetService } from "../../services/budget.service";
-import { BudgetLine } from "../../models/budget-line";
-import { Subscription } from "rxjs/Rx";
+import { BudgetLine, BudgetLinesSortBy } from "../../models/budget-line.model";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs/Observable";
+import * as fromApp from '../../app/store/app.reducers';
+import * as appActions from '../../app/store/actions';
 
 @IonicPage()
 @Component({
   selector: 'page-lines',
   templateUrl: 'lines.html',
 })
-export class LinesPage implements OnInit{
+export class LinesPage implements OnInit {
 
-  budgetLines: BudgetLine[] = [];
-  searchQuery: string = '';
-  filteredLines: BudgetLine[];
-  sortByCashLeftOrderAsc: boolean = true;
-  sortByNameOrderAsc: boolean = true;
-  subscription: Subscription;
+  budgetLines$: Observable<BudgetLine[]>;
+  searchQuery$: Observable<string>;
+  filteredLines$: Observable<BudgetLine[]>;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public budgetService: BudgetService,
+    private store: Store<fromApp.AppState>,
     public viewCtrl: ViewController) {
   }
 
   ngOnInit() {
-    this.budgetLines = this.navParams.get('budgetLines');
     this.initLines();
-
   }
 
-  private initLines() {
-    this.subscription = this.budgetService.findBudgetLines()
-      .subscribe(
-      (budgetLines => this.filteredLines = budgetLines.slice())
-      );
+  initLines() {
+    this.budgetLines$ = this.store.select(state => state.storeData.budgetLines);
+    this.filteredLines$ = this.store.select(state => state.uiState.filteredBudgetLines);
+    this.searchQuery$ = this.store.select(state => state.uiState.budgetLinesSearchQuery);
   }
 
   ionViewDidLoad() {
     //   console.log('ionViewDidLoad LinesListPage');
   }
 
-  ionViewWillUnload() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
 
   onClose(selectedLine: BudgetLine = null) {
     this.viewCtrl.dismiss(selectedLine);
   }
 
-  onSortByCashLeft() {
-    this.sortByCashLeftOrderAsc = !this.sortByCashLeftOrderAsc;
-    this.filteredLines = this.budgetService.sortByCashLeft(this.filteredLines, this.sortByCashLeftOrderAsc);
+  onSortByCashLeft(): void {
+    this.store.dispatch(new appActions.SetBudgetLinesSortAction(BudgetLinesSortBy.BY_CASH_LEFT));
   }
 
-  onSortByName() {
-    this.sortByNameOrderAsc = !this.sortByNameOrderAsc;
-    this.filteredLines = this.budgetService.sortByName(this.filteredLines, this.sortByNameOrderAsc);
+  onSortByName(): void {
+    this.store.dispatch(new appActions.SetBudgetLinesSortAction(BudgetLinesSortBy.BY_NAME));
   }
 
 
@@ -77,18 +66,21 @@ export class LinesPage implements OnInit{
     }
   }
 
-  getItems(ev: any) {
+  getItems(ev: any, filteredLines: BudgetLine[], budgetLines: BudgetLine[]): BudgetLine[] {
     // set val to the value of the searchbar
     let val = ev.target.value;
-
+    this.store.dispatch(new appActions.SetBudgetLinesSearchQueryAction(val));
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
-      this.filteredLines = this.filteredLines.filter((line) => {
+      filteredLines = budgetLines.filter((line) => {
         return (line.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
+      this.store.dispatch(new appActions.SetFilteredBudgetLinesAction(filteredLines));
+      
     } else {
       this.initLines();
-      return this.filteredLines;
+      this.store.dispatch(new appActions.LoadDefaultBudgetLinesAction());
+      return filteredLines;
     }
   }
 
@@ -96,6 +88,7 @@ export class LinesPage implements OnInit{
 
     this.onClose(selectedLine);
   }
+
 
 
 }
